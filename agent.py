@@ -1,5 +1,6 @@
 import maze as mz
 import numpy as np
+import random
 
 class agent:
     def __init__(self, maze):
@@ -20,6 +21,8 @@ class agent:
 
         self.max_epochs = 1000
 
+        self.explore = 0.15
+
     def qAlgorithm(oldValue, learningRate, reward, gamma, maximum):
         """
         oldValue is the old value of the q table value
@@ -28,6 +31,26 @@ class agent:
         maximum is the maximum possible reward from any action the agent can take from its current state
         """
         return oldValue + (learningRate * reward + gamma * maximum - oldValue)
+    def run():
+        for epoch in range(1, self.max_epochs):
+            # a list containing all the steps taken in this epoch
+            runCompleted = False
+            coords = (0, 0)
+            steps = []
+            while not runCompleted:
+                # if we are at the goal, our run is completed!!!
+                if coords == self.goal:
+                    runCompleted = True
+                    break
+                
+                # 99 because 0 to 15 is 16 numbers (16% chance)
+                exploreOrNot = True if random.random(0, 99) < self.explore else False
+                if exploreOrNot:
+                    # need to choose legal moves
+                    # randomy choose an action to take
+                    action = random.choice(list(self.possibleActions.keys()))
+
+
 
 
     def reward(coordinates):
