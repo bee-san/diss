@@ -68,6 +68,25 @@ class agent:
         we need to make the agent choose the maximum goal at each point
 
         reward has to be added after each goal, otherwise we could just do the entire table right at the start
+        
+        agent takes a negative penality if it already visits a square it has been to
+        maybe the agent itself should have a reward function, it takes negative reward for visiting squares its already been to
+        and positive reward 
+
+        -0.25 negative reward for visitng a square its already been to, 
+
+        To avoid infinite loops and senseless wandering, the game is ended (**lose**) once the total reward of the rat is below the negative threshold: (-0.5 * maze.size). We assume that under this threshold, the rat has "lost its way" and already made too many errors from which he has learned enough, and should proceed to a new fresh game. 
+        
+        ok we have a dict of (coords, action) with a reward
+        if agent goes outside 
+
+        Each move has a reward.
+        The max rewards of 1 point is given when the agent reaches the goal
+        Penialised -0.25 for any move to a cell it has already visited
+        -0.05 reward for every time it moves, encourages it to get to the end faster
+        game ends when agent has -0.5 * 10 (size of maze) points
+
+        Eventually, the best path to the maze will be the one which incurs the least penalty after having explored the entire maze.
         """
         return sum(coordinates) / sum(self.goal))
 

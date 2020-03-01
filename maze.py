@@ -8,17 +8,20 @@ import operator
 class maze:
     def __init__(self):
         self.maze = np.array([
-            [ 1.,  0.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
-            [ 1.,  1.,  1.,  1.,  1.,  0.,  1.,  1.,  1.,  1.],
-            [ 1.,  1.,  1.,  1.,  1.,  0.,  1.,  1.,  1.,  1.],
-            [ 0.,  0.,  1.,  0.,  0.,  1.,  0.,  1.,  1.,  1.],
-            [ 1.,  1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  1.],
-            [ 1.,  1.,  0.,  1.,  0.,  1.,  1.,  1.,  1.,  1.],
-            [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
-            [ 1.,  1.,  1.,  1.,  1.,  1.,  0.,  0.,  0.,  0.],
-            [ 1.,  0.,  0.,  0.,  0.,  0.,  1.,  1.,  1.,  1.],
-            [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  0.,  1.,  1.]
+            [ 1,  0,  1,  1,  1,  1,  1,  1,  1,  1],
+            [ 1,  1,  1,  1,  1,  0,  1,  1,  1,  1],
+            [ 1,  1,  1,  1,  1,  0,  1,  1,  1,  1],
+            [ 0,  0,  1,  0,  0,  1,  0,  1,  1,  1],
+            [ 1,  1,  0,  1,  0,  1,  0,  0,  0,  1],
+            [ 1,  1,  0,  1,  0,  1,  1,  1,  1,  1],
+            [ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
+            [ 1,  1,  1,  1,  1,  1,  0,  0,  0,  0],
+            [ 1,  0,  0,  0,  0,  0,  1,  1,  1,  1],
+            [ 1,  1,  1,  1,  1,  1,  1,  0,  1,  1]
         ])
+        self.row = 10
+        self.col = 10
+
     def getMaze():
         return self.maze
     def getSizeOfMaze():
@@ -39,10 +42,14 @@ class maze:
             try:
                 print(self.vectorAddition(coords, moves[move]))
                 newCoords = self.vectorAddition(coords, moves[move])
-
-                if self.vectorAddition(coords, moves[move]) != 0:
-                    # append to dictionary
+                # checks to see if there is an illegal move
+                negativeCoords = True if any(y < 0 for y in x) else False
+                outsideMap = True if any(y > len(self.maze[0]) - 1 for y in newCoords) else False
+                illegalMove = True if negativeCoords + outsideMap == True else False
+                if not illegalMove and newCoords != 0:
                     legalMoves[move] = moves[move]
+                    # append to dictionary
+                    
             except IndexError as e:
                 print("Index error")
                 # Not a valid move as it goes out of bounds
