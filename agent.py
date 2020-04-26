@@ -162,6 +162,9 @@ class agent:
         newReward = self.qAlgorithm(oldReward, totalReward, maximumPossibleReward)
 
         # now we need to calculate maximum mvoement rward from all possible legal moves in this new position
+        maximumRewardFromMoves = self.maximumRewardFromLegalMoves()
+
+        # now we need to calculate Q algorithm, and then add +1 to all moves in the reward matrix
     
     def maximumRewardFromLegalMoves(self):
         """
