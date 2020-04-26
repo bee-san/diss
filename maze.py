@@ -5,6 +5,7 @@ Class to make the maze in Python
 import numpy as np
 import Qagent
 import operator
+import random
 
 class maze:
     def __init__(self):
@@ -24,17 +25,23 @@ class maze:
         self.col = 10
         self.agentLocation = (0, 0)
         self.moves = {"Up": (1, 0), "Down": (-1, 0), "Left": (0, -1), "Right": (0, 1)}
+        self.action = (0, 0)
 
     def getMaze(self):
         return self.maze
     def getSizeOfMaze(self):
         return len(self.maze)
+    def getRandomMove(self):
+            legalMoves = self.getLegalMoves()
+            return random.choice(list(legalMoves.values()))
     def vectorAddition(self, tup1, tup2):
-        if tup1 == 0:
-            tup1 = (0, 0)
         # since we want to add coords together element wise
         # (0, 0) + (1, 1) = (0, 0, 1, 1). this makes the result (1, 1).
         # https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
+        if tup1 == 0:
+            tup1 == self.agentLocation
+        if tup2 == 0:
+            tup2 = self.getRandomMove()
         print(tup1, tup2)
         return tuple(map(operator.add, tup1, tup2))
     def setAgentLocation(self, location):
@@ -46,7 +53,13 @@ class maze:
         # Moves the agent
         # gets first coords from action, and adds that to agents current location
         # agent can only make legal moves
-        self.setAgentLocation(self.vectorAddition(action[next(iter(action))], self.getAgentLocation()))
+        if isinstance(action, dict):
+            opt = action[next(iter(action))]
+        else:
+            opt = action
+        if action == 0:
+            opt = self.getRandomMove()
+        self.setAgentLocation(self.vectorAddition(opt, self.getAgentLocation()))
     def getLegalMoves(self):
         # 0 is a wall
         # 1 is valid
