@@ -67,10 +67,4 @@ class maze:
         # (0, 0) input
         # {'Up': (1, 0), 'Right': (0, 1)} output
         return legalMoves
-
-m = maze()
-coords = (0, 0)
-print(coords)
-m.setAgentLocation((0, 0))
-print(m.getLegalMoves())
 # dist = np.sqrt(((a[:, None] - b[:, :, None]) ** 2).sum(0)) 8said animation and ri

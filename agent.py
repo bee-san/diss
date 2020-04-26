@@ -65,6 +65,10 @@ class agent:
                 # if we are at the goal, our run is completed!!!
                 if coords == self.goal:
                     runCompleted = True
+                    # agent gets 1 for completing the reward
+                    for i in steps:
+                        rwrd = self.finalReward(i)
+                        self.rewardsTable[i] = {"State": i, "Action": self.rewardsTable[i]["Action"], "Reward": rwrd}
                     break
                 
                 # 99 because 0 to 15 is 16 numbers (16% chance)
@@ -86,10 +90,31 @@ class agent:
                     self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": action, "Reward": newReward}
                     # self.rewardsTable = { (1, 1): {"State": (1, 1), "Action": (0, 1), "Reward": 0.75}, (0, 0): {"State": (0, 0), "Action": (0, 1), "Reward": 0.75}}
                 else:
-                    print("yeet no else here yet!")
+                    move = self.bestMove()
+                    oldCoords = self.maze.getAgentLocation()
+
+                    self.maze.agentMovement(action)
+
+                    steps.append(oldCoords)
+
+                    newReward = self.reward(self.maze.getAgentLocation(), oldCoords, steps)
+
+                    self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": action, "Reward": newReward}
+
+
                 
+    def finalReward(self, location):
+    
 
-
+        totalReward = 1
+        try:
+            oldReward = self.rewardsTable[location]['Reward']
+        except KeyError as e:
+            oldReward = 0.00
+        maximumPossibleReward = 1
+        newReward = self.qAlgorithm(oldReward, totalReward, maximumPossibleReward)
+        
+        return newReward
 
     def reward(self, agentLocation, oldLocation, steps):
         """
@@ -167,6 +192,34 @@ class agent:
         # now we need to calculate Q algorithm, and then add +1 to all moves in the reward matrix. We can do this in the main code me thinks?
         return newReward
     
+    def bestMove(self):
+        """
+        goes through all legal moves
+        calculates maximum possible reward
+        needed for Q learning algorithm
+        """
+        moves = self.maze.getLegalMoves()
+        # for every coord in the legal moves
+        coords = list(moves.values())
+        # set reward of first legal move to max reward
+        # prevents bugs
+        try:
+            maxReward = self.rewardsTable[coords[0]]['Reward']
+            bestMove = self.rewardsTable[coords[0]]['Action']
+        except KeyError as e:
+            maxReward = 0.00
+            # chooses first move as the best
+            bestMove = moves[next(iter(moves))]
+        # iterates over the dictionary
+        for key, i in moves.values():    
+            try:
+                newReward = self.rewardsTable[i]['Reward']
+            except KeyError as e:
+                newReward = 0.00
+            if maxReward < newReward:
+                maxReward = newReward
+                bestMove = i # best move equal to the best move we should do, which is i as the data is {'Up': (1, 0)}
+        return bestMove
     def maximumRewardFromLegalMoves(self):
         """
         goes through all legal moves
