@@ -42,6 +42,7 @@ class maze:
             tup1 == self.agentLocation
         if tup2 == 0:
             tup2 = self.getRandomMove()
+            
         print(tup1, tup2)
         return tuple(map(operator.add, tup1, tup2))
     def setAgentLocation(self, location):
