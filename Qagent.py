@@ -1,10 +1,9 @@
-import maze as mz
 import numpy as np
 import random
 
 class agent:
     def __init__(self, maze):
-        self.maze = mz.maze()
+        self.maze = maze
 
         # we start at (0,0) and we finish at the very bottom right of the maze
         self.start = (0, 0)
@@ -72,14 +71,14 @@ class agent:
                     break
                 
                 # 99 because 0 to 15 is 16 numbers (16% chance)
-                exploreOrNot = True if random.random(0, 99) < self.explore else False
+                exploreOrNot = True if random.randint(0, 99) < self.explore else False
                 if exploreOrNot:
                     # need to choose legal moves
                     # randomy choose an action to take
                     legalMoves = self.maze.getLegalMoves()
                     # action, old coords for q table
                     # just need the reward of the movement now!
-                    action = random.choice(legalMoves)
+                    action = random.choice(list(legalMoves.values()))
                     oldCoords = self.maze.getAgentLocation()
                     # performs the movement
                     self.maze.agentMovement(action)
@@ -93,13 +92,13 @@ class agent:
                     move = self.bestMove()
                     oldCoords = self.maze.getAgentLocation()
 
-                    self.maze.agentMovement(action)
+                    self.maze.agentMovement(move)
 
                     steps.append(oldCoords)
 
                     newReward = self.reward(self.maze.getAgentLocation(), oldCoords, steps)
 
-                    self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": action, "Reward": newReward}
+                    self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": move, "Reward": newReward}
 
 
                 
@@ -235,7 +234,7 @@ class agent:
             maxReward = self.rewardsTable[coords[0]]['Reward']
         except KeyError as e:
             maxReward = 0.00
-        for i in list(moves.values()[1::]):
+        for i in list(moves.values())[1::]:
             try:
                 newReward = self.rewardsTable[i]['Reward']
             except KeyError as e:
@@ -243,17 +242,3 @@ class agent:
             if maxReward < newReward:
                 maxReward = newReward
         return maxReward
-
-    def sortRewardsTable(self):
-        # sorts the rewards table on state
-        # so logically, coordinates (0, 0) comes first
-        newlist = sorted(x, key=lambda k: k['State'])
-
-    def searchRewardsTable(self, oldCoords, newCoords):
-        # Searches the rewards table, returns the item. 
-        # if we can search instantly,. this function is not needed.
-        return None
-
-
-
-    
