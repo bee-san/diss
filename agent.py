@@ -81,7 +81,10 @@ class agent:
                     self.maze.agentMovement(action)
                     # now we just need to calculate the reward
                     steps.append(oldCoords)
-                    # now we need to perform the action
+                    # now we need to add the reward to the table.
+                    newReward = self.reward(self.maze.getAgentLocation(), oldCoords, steps)
+                    self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": action, "Reward": newReward}
+                    # self.rewardsTable = { (1, 1): {"State": (1, 1), "Action": (0, 1), "Reward": 0.75}, (0, 0): {"State": (0, 0), "Action": (0, 1), "Reward": 0.75}}
                 else:
                     print("yeet no else here yet!")
                 
@@ -161,10 +164,8 @@ class agent:
 
         newReward = self.qAlgorithm(oldReward, totalReward, maximumPossibleReward)
 
-        # now we need to calculate maximum mvoement rward from all possible legal moves in this new position
-        maximumRewardFromMoves = self.maximumRewardFromLegalMoves()
-
-        # now we need to calculate Q algorithm, and then add +1 to all moves in the reward matrix
+        # now we need to calculate Q algorithm, and then add +1 to all moves in the reward matrix. We can do this in the main code me thinks?
+        return newReward
     
     def maximumRewardFromLegalMoves(self):
         """
@@ -190,10 +191,6 @@ class agent:
                 maxReward = newReward
         return maxReward
 
-
-        
-
-        return "No return yet"
     def sortRewardsTable(self):
         # sorts the rewards table on state
         # so logically, coordinates (0, 0) comes first
