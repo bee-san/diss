@@ -5,41 +5,37 @@ class agent:
     def __init__(self, maze):
         self.maze = maze
 
-        # we start at (0,0) and we finish at the very bottom right of the maze
+        # Where does the agent start>
         self.start = (0, 0)
+
+        # Where is the goal of the agent?
+        # self.maze.getSizeOfMaze() sets the agent goal to the very bottom right hand corner
+        # Can use coordinates such as (15, 15)
         self.goal = self.maze.getSizeOfMaze()
         
-        # the reward table is the size of the maze filled with 0's as data type float 32bit
-        #self.rewardsTable = np.zeros(self.maze.getSizeOfMaze(), dtype=np.float32)
-        # the rewards table is a dictionary of {state, action, reward}
-        # Rewards table should be {"State": {"action": "hello"}}
-        # but if we have to do binarysearch after every action, it'll be slower
-        # it'll be faster if we replace "state" with the actual state like (0, 0)
-        # I think for readability, it would make sense to do it like:
-        # {(0, 0): {"State": (0, 0), "Action": (0, 1), "Reward": 0.75}}
-        # as we know this small packet is assiocated with (0, 0)
-        # 
+        # The reward table the agent starts with. You can manually insert rewards like:
+        # self.rewardsTable = { (1, 1): {"State": (1, 1), "Action": (0, 1), "Reward": 0.75}, (0, 0): {"State": (0, 0), "Action": (0, 1), "Reward": 0.75}}
+        self.rewardsTable = {}
 
-
-        # because otherwise,. it would be a list of dictionaries? We can use a dictionary of dictionaries for easy updatinhg. NO! Because where would state be stored lol.
-        # We'd want to use a sorted list, sorted on the coordinates to display state.
-        # when picking from this table, make sure to pick a legal move!
-
-        # TODO delete this!!
-        self.rewardsTable = { (1, 1): {"State": (1, 1), "Action": (0, 1), "Reward": 0.75}, (0, 0): {"State": (0, 0), "Action": (0, 1), "Reward": 0.75}}
-
-        # possible actions
+        # What actions can the agent take?
         self.possibleActions = {"Up": (1, 0), "Down": (-1, 0), "Left": (0, -1), "Right": (0, 1)}
 
+        # How much the agent expects to gain from future value.
         self.gamma = 0.5
+
+        # How fast can the agent learn?
         self.learningRate = 0.5
 
+        # How many times will the agent complete the maze before it stops?
         self.max_epochs = 1000
 
+        # The probability that the agent will explore on that round, instead of exploiting the rewards table
         self.explore = 0.15
         
-        # the agents internal state of the reward
+        # The agents current reward when it starts
         self.Agentreward = 0.00
+
+        # The agents penalty for moving. Prevents the agent from running around in circles
         self.penaltyMoving = -0.05
 
     def qAlgorithm(self, oldValue, reward, maximum):
@@ -49,6 +45,7 @@ class agent:
         gamma is the discount rate
         maximum is the maximum possible reward from any action the agent can take from its current state
         """
+        
         return oldValue + (self.learningRate * reward + self.gamma * maximum - oldValue)
 
     def run(self):
@@ -120,43 +117,35 @@ class agent:
         agentLocation = current location of the agent
         oldLocation = previous location of the agent
         Steps = all the steps the agent has taken
-        """
-        """
-        if i record path it takes to get to the end result
-        then once it reaches the end, i can update the q learning table to reflect this
-        exploration means it will still go weird ways
-        but it'll have to explore more than usual. normally q learning tables update after every action
-        Unless every action incurs a penalty, but reaching the reward means that path is rewarded?
 
-        ok so what if we take the coordinates, add them together (1, 1) = 2, then divide by 10 + 10?
-        that way, the agent is continually moving "towards" the goal
-        then we simply add the reward onto the path for the agent reaching the goal
+        Record the path the agent takes to get to the end result, once it reaches the end we can update the Q learning table to reflect this.
+        Reaching the reward means that path incurs a reward of 1, but each action also generates a reward.
+        To generate this reward, we use the Q learning algorithm.
 
-        we need to make the agent choose the maximum goal at each point
-
-        reward has to be added after each goal, otherwise we could just do the entire table right at the start
+        To do that, we need to do a few things:
+        * The agent chooses the maximum reward at each point that is exploitationary
+        * Reward is added after each action
         
-        agent takes a negative penality if it already visits a square it has been to
-        maybe the agent itself should have a reward function, it takes negative reward for visiting squares its already been to
-        and positive reward 
+        But this doesn't solve the issue of the agent mindlessly wandering. 
 
-        -0.25 negative reward for visitng a square its already been to, 
+        We can apply a negative reward to the agent to prevent this. 
 
-        To avoid infinite loops and senseless wandering, the game is ended (**lose**) once the total reward of the rat is below the negative threshold: (-0.5 * maze.size). We assume that under this threshold, the rat has "lost its way" and already made too many errors from which he has learned enough, and should proceed to a new fresh game. 
-        
-        ok we have a dict of (coords, action) with a reward
-        if agent goes outside 
+        But again, this doesn't solve the problem - the agent just gets a lower reward.
 
-        Each move has a reward.
-        The max rewards of 1 point is given when the agent reaches the goal
-        Penialised -0.25 for any move to a cell it has already visited
-        -0.05 reward for every time it moves, encourages it to get to the end faster
-        game ends when agent has -0.5 * 10 (size of maze) points
+        We have another problem - the agent may choose to revisit squares it has already been to.
 
-        Eventually, the best path to the maze will be the one which incurs the least penalty after having explored the entire maze.
+        Therefore, the agent takes a negative reward when visiting a square it has been to.
+
+        To avoid infinite loops and mindless wandering, it is not enough that the agent takes negative reward. The game should end (the agent loses)
+        when the total reward is below a negative threshold. We assume that when the agent reaches this threshold, it has lost its way and already has made too
+        many errors from which the agent has learned enough. The agent should start a fresh new game.
+
+        Eventually, the best path to the maze will be the one which incurs the least penalty after having explored the entire maze (or the highest reward).
+
+        The rough numbers I should use are:
         
         # updated rewards
-        * -0.25 negaticve reward for visting a square it has already been to
+        * -0.25 negative reward for visting a square it has already been to
         * all squares it visits when it reaches goal gets +1 reward
         * -0.5 reward every time it moves, encourages it to get to end faster
         * Agent keeps internal state of reward it has collected thus far

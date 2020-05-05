@@ -60,7 +60,8 @@ class maze:
             opt = action
         if action == 0:
             opt = self.getRandomMove()
-        self.setAgentLocation(self.vectorAddition(opt, self.getAgentLocation()))
+        ret = self.vectorAddition(opt, self.getAgentLocation())
+        self.setAgentLocation(ret)
     def getLegalMoves(self):
         # 0 is a wall
         # 1 is valid
@@ -86,6 +87,8 @@ class maze:
         # {'Up': (1, 0), 'Right': (0, 1)} output
         return legalMoves
 # dist = np.sqrt(((a[:, None] - b[:, :, None]) ** 2).sum(0)) 8said animation and ri
-m = maze()
-a = Qagent.agent(m)
-a.run()
+
+if 'name' == '__main__':
+    m = maze()
+    a = Qagent.agent(m)
+    a.run()
