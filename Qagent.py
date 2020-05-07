@@ -5,6 +5,13 @@ class agent:
     def __init__(self, maze):
         self.maze = maze
 
+
+        """
+        CHANGE VARIABLES BELOW THIS LINE
+        """
+        # How fast can the agent learn?
+        self.learningRate = 0.25
+
         # Where does the agent start>
         self.start = (0, 0)
 
@@ -23,11 +30,8 @@ class agent:
         # How much the agent expects to gain from future value.
         self.gamma = 0.5
 
-        # How fast can the agent learn?
-        self.learningRate = 0.5
-
         # How many times will the agent complete the maze before it stops?
-        self.max_epochs = 1000
+        self.max_epochs = 1
 
         # The probability that the agent will explore on that round, instead of exploiting the rewards table
         self.explore = 0.15
@@ -37,6 +41,9 @@ class agent:
 
         # The agents penalty for moving. Prevents the agent from running around in circles
         self.penaltyMoving = -0.05
+        """
+        DON'T CHANGE ANYTHING ABOVE THIS LINE
+        """
 
     def qAlgorithm(self, oldValue, reward, maximum):
         """
@@ -96,6 +103,8 @@ class agent:
                     newReward = self.reward(self.maze.getAgentLocation(), oldCoords, steps)
 
                     self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": move, "Reward": newReward}
+            print("The steps the agent took are " + str(steps))
+            print("The current reward table is " + str(self.rewardsTable))
 
 
                 
@@ -165,7 +174,6 @@ class agent:
         
         if agentLocation == self.goal:
             # update all rewards if we've reached the goal
-            # TODO can't do this until we have a rewards table!
             totalReward += 1
         # get old reward
         try:

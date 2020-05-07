@@ -42,8 +42,6 @@ class maze:
             tup1 == self.agentLocation
         if tup2 == 0:
             tup2 = self.getRandomMove()
-            
-        print(tup1, tup2)
         return tuple(map(operator.add, tup1, tup2))
     def setAgentLocation(self, location):
         # keeps a record of where the agent is currently located
@@ -79,7 +77,6 @@ class maze:
                     # append to dictionary
                     
             except IndexError as e:
-                print("Index error")
                 # Not a valid move as it goes out of bounds
                 continue
         # returns dictionary of legal moves
