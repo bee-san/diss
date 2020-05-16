@@ -37,7 +37,6 @@ class maze:
     def vectorAddition(self, tup1, tup2):
         # since we want to add coords together element wise
         # (0, 0) + (1, 1) = (0, 0, 1, 1). this makes the result (1, 1).
-        # https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
         if tup1 == 0:
             tup1 == self.agentLocation
         if tup2 == 0:
@@ -83,9 +82,8 @@ class maze:
         # (0, 0) input
         # {'Up': (1, 0), 'Right': (0, 1)} output
         return legalMoves
-# dist = np.sqrt(((a[:, None] - b[:, :, None]) ** 2).sum(0)) 8said animation and ri
 
-if 'name' == '__main__':
+if __name__ == '__main__':
     m = maze()
     a = Qagent.agent(m)
     a.run()

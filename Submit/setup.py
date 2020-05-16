@@ -4,9 +4,10 @@ setup(
     name='Reinforcement Learning Agents',
     version='',
     packages=[''],
-    url='https://github.com/brandonskerritt/diss',
+    url='https://github.com/Author/diss',
     license='',
-    author='Brandon Skerritt',
+    author='Author',
     author_email='',
     description=''
+    install_requires=['numpy']
 )

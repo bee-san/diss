@@ -1,5 +1,7 @@
 import numpy as np
 import random
+import time
+import pprint
 
 class agent:
     def __init__(self, maze):
@@ -31,7 +33,7 @@ class agent:
         self.gamma = 0.5
 
         # How many times will the agent complete the maze before it stops?
-        self.max_epochs = 1
+        self.max_epochs = 2
 
         # The probability that the agent will explore on that round, instead of exploiting the rewards table
         self.explore = 0.15
@@ -72,6 +74,7 @@ class agent:
                     for i in steps:
                         rwrd = self.finalReward(i)
                         self.rewardsTable[i] = {"State": i, "Action": self.rewardsTable[i]["Action"], "Reward": rwrd}
+                        print(f"The rewards table is \n {self.rewardsTable}")
                     break
                 
                 # 99 because 0 to 15 is 16 numbers (16% chance)
@@ -103,6 +106,10 @@ class agent:
                     newReward = self.reward(self.maze.getAgentLocation(), oldCoords, steps)
 
                     self.rewardsTable[oldCoords] = {"State": oldCoords, "Action": move, "Reward": newReward}
+                print("The rewards table is: ")
+                pprint.pprint(self.rewardsTable)
+                print(f"The steps taken so far are \n {steps}")
+                time.sleep(1)
             print("The steps the agent took are " + str(steps))
             print("The current reward table is " + str(self.rewardsTable))
 

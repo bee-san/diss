@@ -1,9 +1,9 @@
 # What is reinforcement learning?
-Reinforcement learning is similar to how we humans learn. When we want to learn how to open a jar, we repeatedly try to open it in many different ways. First clockwise, then anti-clockwise, maybe we'll use a tea towel or our shirts to get a better grip. Eventually, after trial and error we know how to open a jar.
+Reinforcement learning is similar to how we humans learn. When we want to learn how to open a jar, we repeatedly try to open it in many different ways. First clockwise, then anti-clockwise, maybe we'll use a tea towel or our shirts to get a better grip. Eventually, after trial and error, we know how to open a jar.
 
-Reinforcement lerning is the same. The machine repeatedly tries one thing after another until it gets it right. 
+Reinforcement learning is the same. The machine repeatedly tries one thing after another until it gets it right. 
 
-For example, if we have a maze where the machine has to go from one side to the other, the machine will bump and get lost millions of times before it eventually learns how to complete the maze, and even the fastest way through the maze.
+For example, if we have a maze where the machine has to go from one side to the other, the machine will bump and get lost millions of times before it eventually learns how to complete the maze and even the fastest way through the maze.
 
 # What is an agent?
 The agent is the little person that explores the maze! We traditionally call them agents, because we tell them to accomplish something and they do it. And also, universities prefer agents over "tiny computerised humans".
@@ -14,7 +14,7 @@ The way agents learn is that they store all the information they gather in a tab
 * What is the new location of the agent?
 * What is the reward of moving this way?
 
-Take for instance, the agent is at the start at (0, 0). If the agent moves right, that might give a reward of 0.2.
+Take, for instance, the agent is at the start at (0, 0). If the agent moves right, that might give a reward of 0.2.
 If the agent moves down, it might give a reward of 0.5. The agent now knows the best move is to move down.
 
 The agent has to write these things down. As humans, we also use memory to remember things. "This door opens inwards", "to unlock the front door you have to push the lockdown and the door handle at the same time" and so on. The agent has a memory, just like us.
@@ -41,7 +41,7 @@ self.learningRate = 0.25
 
 1. Set the learning rate to 0.5.
 
-Now, run the file `maze.py` and observe the output. **Note: everytime we want to run the agent, we have to run maze.py**
+Now, run the file `maze.py` and observe the output. **Note: every time we want to run the agent, we have to run maze.py**
 
 Look at the path the agent took, and the rewards table. How big is the path? How small is the rewards table?
 
@@ -52,9 +52,9 @@ We're going to play around with the `self.explore` variable now.
 
 The explore variable is a probability between 0 and 1 (where 0.15 is 15%).
 
-In reinforcement learning, we have a tradeoff of exploiting what we know, or trying something different.
+In reinforcement learning, we have a tradeoff of exploiting what we know or trying something different.
 
-Take for instance, buttering bread. 
+Take, for instance, buttering bread. 
 
 If we butter bread like a circle, going clockwise around the bread it's not very efficient. But if we never explore, we would never find the most efficient way to butter the bread.
 
@@ -75,13 +75,13 @@ What if we set explore to 0? Will the agent find the best route through the maze
 # Task 3
 Now we're going to understand the randomness aspect of exploratory. Because the agent explores, that means every time the agent attempts the maze will be different from the last time. Run your programs and have a look at the person next to you. See how they're different routes? Different rewards? One of your agents is smarter than the other!
 
-But, you might see a problem. There is only 1 route which is the fastest way through the maze. But if there's 1 route, and every agent is slightly different because of the random explorations, how does it find the best route?
+But, you might see a problem. There is only 1 route which is the fastest way through the maze. But if there is 1 route and every agent is slightly different because of the random explorations, how does it find the best route?
 
 The answer is using epochs.
 
 Epoch is a fancy word for "time". Specifically, we might tell the agent:
 > "Do this maze 10 billion times"
-If we make 2 agents do the maze 2 or 3 times, there answers will be completely different. But if we make the agents do the maze 10 billion times, they will _converge_ on the correct answer - the fastest route through the maze!
+If we make 2 agents do the maze 2 or 3 times, their answers will be completely different. But if we make the agents do the maze 10 billion times, they will _converge_ on the correct answer - the fastest route through the maze!
 
 Set the epochs variable to a high number, such as `10000`. However! Your screen might go crazy, so try not to read every single line that comes out of the program.
 
@@ -119,7 +119,7 @@ See how they differ?
 
 # Task 5
 
-Now, we're going to work on punishing the agent. To prevent the agent from wandering around in circles, the agent takes a punishment everytime it moves. 
+Now, we're going to work on punishing the agent. To prevent the agent from wandering around in circles, the agent takes a punishment every time it moves. 
 
 If the punishment is too much, the agent gives up and we get a new agent to try (but with the same rewards table as the last agent).
 
@@ -129,7 +129,7 @@ Too low of a punishment and the agent will think "why bother?" and will reach th
 
 Find this on line 43 of Qagent:
 ```python
-# The agents penalty for moving. Prevents the agent from running around in circles
+# The agent's penalty for moving. Prevents the agent from running around in circles
 self.penaltyMoving = -0.05
 ```
 
@@ -160,7 +160,7 @@ self.maze = np.array([
 
 The 1 represents openness, a straight corridor for the agent. The 0's represent a wall, something the agent can not pass. 
 
-What if we make the goal impossible to reach? The goal is in the bottom right hand corner. 
+What if we make the goal impossible to reach? The goal is in the bottom right-hand corner. 
 
 1. Change some of the 1's to 0's (walls) to prevent the agent from reaching the goal. What will happen then?
 
@@ -186,7 +186,7 @@ Don't forget to remove the comma!
 
 # Task 8
 
-Now we're going to change the agents start location. Currently, it starts at top left (0, 0). But it can start anywhere!
+Now we're going to change the agents start location. Currently, it starts at the top left (0, 0). But it can start anywhere!
 
 The way the coordinates system works is (row, column). "Along the corridor, up the stairs". 
 
@@ -213,7 +213,7 @@ self.goal = (15, 15)
 2. If you set the goal and start location to the same place, what happens?
 
 # Task 10
-This is a really advanced task.
+This is an advanced task.
 1. Change how the agent learns
 
 Some things you may want to do:
@@ -222,6 +222,6 @@ Some things you may want to do:
 * Play with the learning rate
 * Play with the gamma rate
 
-Try to find the most optimal settings which results in the most optimal agent. Often, we would program a computer to automatically find the most optimal settings. But it is possible to deduct and use logic to workout roughly what the most optinal settings are.
+Try to find the most optimal settings which result in the most optimal agent. Often, we would program a computer to automatically find the most optimal settings. But it is possible to deduct and use logic to work out roughly what the most optimal settings are.
 
 Google things you don't understand such as "learning rate" or "gamma q learning" to get the answers you're looking for.
